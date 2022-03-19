@@ -17,16 +17,16 @@ font = FontProperties(fname="Songti.ttc")
 bar_width = 0.5
 lyric = ""
 
-f = open("C:\\Users\\moban\\Documents\\Cassis\\Weibo-Analyst-master\\step3_word_cloud\\嬛帮果.dat", "r")
-stopword = ["网页", "链接", "电视剧", "官方", "卫视", "播出", "热播", "视频", "粉丝团", "后宫"]
+f = open("路径.dat", "r")
+stopword = [""]
 
 
 content = ""
-with open("C:\\Users\\moban\\Documents\\Cassis\\Weibo-Analyst-master\\step3_word_cloud\\嬛帮果.dat", "r") as file:
+with open("路径.dat", "r") as file:
     content = file.read()
     for word in stopword:
         content = content.replace(word, "")
-with open("C:\\Users\\moban\\Documents\\Cassis\\Weibo-Analyst-master\\step3_word_cloud\\嬛帮果.dat", "w") as file:
+with open("路径.dat", "w") as file:
     file.write(content)
 
 
@@ -42,7 +42,7 @@ for i in result:
     keywords[i[0]] = i[1]
 print(keywords)
 
-image = Image.open("C:\\Users\\moban\\Documents\\Cassis\\Weibo-Analyst-master\\step3_word_cloud\\background.png")
+image = Image.open("路径\background.png")
 graph = np.array(image)
 wc = WordCloud(font_path="Songti.ttc", background_color="White", max_words=50, mask=graph)
 wc.generate_from_frequencies(keywords)
