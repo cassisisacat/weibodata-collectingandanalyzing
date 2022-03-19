@@ -4,7 +4,7 @@ from jieba import analyse
 
 tfidf = analyse.extract_tags
 
-for line in open("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\data_full.dat",encoding='utf-8'):
+for line in open("路径\data_full.dat",encoding='utf-8'):
     
     text = line
 
@@ -17,7 +17,7 @@ for line in open("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\data
         result.append(keyword)
 
     #print(result)
-    fo = open("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\data_keywords.dat", "a+",encoding='utf-8')
+    fo = open("路径\data_keywords.dat", "a+",encoding='utf-8')
     
     for j in result:
           
