@@ -15,7 +15,7 @@ comment = []
 pos_count = 0
 neg_count = 0
 
-for line_data in open("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\data_keywords.dat",encoding='utf-8'):
+for line_data in open("路径\data_keywords.dat",encoding='utf-8'):
     
     comment = line_data
     
@@ -41,5 +41,5 @@ plt.axes(aspect=1)  # set this , Figure is round, otherwise it is an ellipse
 plt.pie(x=fracs, labels=labels, explode=explode,autopct='%3.1f %%',
         shadow=True, labeldistance=1.1, startangle = 90,pctdistance = 0.6)
 
-plt.savefig("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\emotions_pie_chart.jpg",dpi = 360)
+plt.savefig("路径\emotions_pie_chart.jpg",dpi = 360)
 plt.show()
