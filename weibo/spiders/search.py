@@ -109,18 +109,12 @@ class SearchSpider(scrapy.Spider):
                 yield weibo
             next_url = response.xpath(
                 '//a[@class="next"]/@href').extract_first()
-            pagenum = 1
             if next_url:
                 next_url = self.base_url + next_url
-                pagenum += 1
                 yield scrapy.Request(url=next_url,
                                      callback=self.parse_page,
-                                     meta={
-                                         'keyword': keyword,
-                                         'pagenum': pagenum
-                                     })
+                                     meta={'keyword': keyword})
         else:
-            print('Split into days')
             start_date = datetime.strptime(self.start_date, '%Y-%m-%d')
             end_date = datetime.strptime(self.end_date, '%Y-%m-%d')
             while start_date <= end_date:
@@ -159,19 +153,12 @@ class SearchSpider(scrapy.Spider):
                 yield weibo
             next_url = response.xpath(
                 '//a[@class="next"]/@href').extract_first()
-            pagenum = 1
             if next_url:
                 next_url = self.base_url + next_url
-                pagenum += 1
                 yield scrapy.Request(url=next_url,
                                      callback=self.parse_page,
-                                     meta={
-                                         'keyword': keyword,
-                                         'date': date,
-                                         'pagenum': pagenum
-                                     })
+                                     meta={'keyword': keyword})
         else:
-            print('Split {} into hours'.format(date))
             start_date_str = date + '-0'
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d-%H')
             for i in range(1, 25):
@@ -206,43 +193,83 @@ class SearchSpider(scrapy.Spider):
         page_count = len(response.xpath('//ul[@class="s-scroll"]/li'))
         if is_empty:
             print('当前页面搜索结果为空')
-        else:
+        elif page_count < self.further_threshold:
             # 解析当前页面
             for weibo in self.parse_weibo(response):
                 self.check_environment()
                 yield weibo
             next_url = response.xpath(
                 '//a[@class="next"]/@href').extract_first()
-            pagenum = 1
             if next_url:
                 next_url = self.base_url + next_url
-                pagenum += 1
                 yield scrapy.Request(url=next_url,
+                                     callback=self.parse_page,
+                                     meta={'keyword': keyword})
+        else:
+            for region in self.regions.values():
+                url = ('https://s.weibo.com/weibo?q={}&region=custom:{}:1000'
+                       ).format(keyword, region['code'])
+                url += self.weibo_type
+                url += self.contain_type
+                url += '&timescope=custom:{}:{}&page=1'.format(
+                    start_time, end_time)
+                # 获取一小时一个省的搜索结果
+                yield scrapy.Request(url=url,
+                                     callback=self.parse_by_hour_province,
+                                     meta={
+                                         'keyword': keyword,
+                                         'start_time': start_time,
+                                         'end_time': end_time,
+                                         'province': region
+                                     })
+
+    def parse_by_hour_province(self, response):
+        """以小时和直辖市/省为单位筛选"""
+        keyword = response.meta.get('keyword')
+        is_empty = response.xpath(
+            '//div[@class="card card-no-result s-pt20b40"]')
+        start_time = response.meta.get('start_time')
+        end_time = response.meta.get('end_time')
+        province = response.meta.get('province')
+        page_count = len(response.xpath('//ul[@class="s-scroll"]/li'))
+        if is_empty:
+            print('当前页面搜索结果为空')
+        elif page_count < self.further_threshold:
+            # 解析当前页面
+            for weibo in self.parse_weibo(response):
+                self.check_environment()
+                yield weibo
+            next_url = response.xpath(
+                '//a[@class="next"]/@href').extract_first()
+            if next_url:
+                next_url = self.base_url + next_url
+                yield scrapy.Request(url=next_url,
+                                     callback=self.parse_page,
+                                     meta={'keyword': keyword})
+        else:
+            for city in province['city'].values():
+                url = ('https://s.weibo.com/weibo?q={}&region=custom:{}:{}'
+                       ).format(keyword, province['code'], city)
+                url += self.weibo_type
+                url += self.contain_type
+                url += '&timescope=custom:{}:{}&page=1'.format(
+                    start_time, end_time)
+                # 获取一小时一个城市的搜索结果
+                yield scrapy.Request(url=url,
                                      callback=self.parse_page,
                                      meta={
                                          'keyword': keyword,
-                                         'date': start_time,
-                                         'pagenum': pagenum
+                                         'start_time': start_time,
+                                         'end_time': end_time,
+                                         'province': province,
+                                         'city': city
                                      })
 
     def parse_page(self, response):
         """解析一页搜索结果的信息"""
         keyword = response.meta.get('keyword')
-        meta = response.meta
         is_empty = response.xpath(
             '//div[@class="card card-no-result s-pt20b40"]')
-
-        new_meta = meta
-        if not 'pagenum' in new_meta:
-            new_meta['pagenum'] = 1
-        output = 'date={}'.format(meta['date'])
-        if 'province_name' in meta:
-            output += ', province={}'.format(meta['province_name'])
-        if 'city_name' in meta:
-            output += ', city={}'.format(meta['city_name'])
-        output += ', page={}'.format(new_meta['pagenum'])
-        print(output)
-
         if is_empty:
             print('当前页面搜索结果为空')
         else:
@@ -251,12 +278,11 @@ class SearchSpider(scrapy.Spider):
                 yield weibo
             next_url = response.xpath(
                 '//a[@class="next"]/@href').extract_first()
-            new_meta['pagenum'] += 1
             if next_url:
                 next_url = self.base_url + next_url
                 yield scrapy.Request(url=next_url,
                                      callback=self.parse_page,
-                                     meta=new_meta)
+                                     meta={'keyword': keyword})
 
     def get_article_url(self, selector):
         """获取微博头条文章url"""
@@ -490,4 +516,5 @@ class SearchSpider(scrapy.Spider):
                     retweet['retweet_id'] = ''
                     yield {'weibo': retweet, 'keyword': keyword}
                     weibo['retweet_id'] = retweet['id']
+                print(weibo)
                 yield {'weibo': weibo, 'keyword': keyword}
