@@ -7,14 +7,14 @@ import sys
 import os
 import csv
 
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\dict_baidu_utf8.txt")
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\dict_pangu.txt")
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\dict_sougou_utf8.txt")
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\dict_tencent_utf8.txt")
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\SogouLabDic.txt")
+jieba.load_userdict("路径\dict_baidu_utf8.txt")
+jieba.load_userdict("路径\dict_pangu.txt")
+jieba.load_userdict("路径\dict_sougou_utf8.txt")
+jieba.load_userdict("路径\dict_tencent_utf8.txt")
+jieba.load_userdict("路径\SogouLabDic.txt")
 
-stopwords = {}.fromkeys([ line.rstrip() for line in open('C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\Stopword.txt',encoding='utf-8' )])
-with open('C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\如懿抽样.csv',encoding='utf-8')as csvfile:
+stopwords = {}.fromkeys([ line.rstrip() for line in open('路径\Stopword.txt',encoding='utf-8' )])
+with open('路径\如懿抽样.csv',encoding='utf-8')as csvfile:
         reader=csv.reader(csvfile)
         column=[row[0] for row in reader]
 
@@ -31,7 +31,7 @@ def get_data(index_weibo):
         if i not in stopwords:
             result.append(i)
     
-    fo=open('C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\data_full.dat','a+',encoding='utf-8')
+    fo=open('路径\data_full.dat','a+',encoding='utf-8')
 
     for j in result:
         fo.write(j)
