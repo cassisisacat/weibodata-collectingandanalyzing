@@ -52,4 +52,13 @@ forked from [KimMeen/Weibo-Analyst](https://github.com/KimMeen/Weibo-Analyst)
 
 ## 改めて　感謝の気持ちを表す
 
+感谢我的恋人只子为更新后的weibo-search提供售后服务
+
+感谢sexy zone和arashi的演唱会让我葆有工作动力
+
+感谢我的舍友没有在我大半夜敲键盘的时候打死我
+
+感谢eimon在我们项目伊始时提供的咨询服务
+
+
 
