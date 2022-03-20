@@ -14,8 +14,42 @@ forked from [KimMeen/Weibo-Analyst](https://github.com/KimMeen/Weibo-Analyst)
 
 依托项目 [frothywater/weibo-search](https://github.com/frothywater/weibo-search) 与 [dataabc/weibo-search](https://github.com/dataabc/weibo-search)
 
-### weibo-cutandkeyword
+部分解决了 [dataabc/weibo-search](https://github.com/dataabc/weibo-search) 中微博搜索只能显示50页的数据缺失问题
+
+配置要求见 weibo-search 下的README.md
+
+
+### weibo-cutword&keyworde
 
 可用于分词及提取关键词
 
-### weibo-
+依托项目 [KimMeen/Weibo-Analyst](https://github.com/KimMeen/Weibo-Analyst)
+
+可选择添加自定义词典提高分词准确性
+
+### weibo-sentimentanalysis
+
+可用于分析提取关键词后的积极情绪与消极情绪占比，需要运行 train.py 后替换文件
+
+依托项目 [KimMeen/Weibo-Analyst](https://github.com/KimMeen/Weibo-Analyst)
+
+
+### weibo-wordcloud
+
+可绘制词云图并统计词频
+
+依托项目 [KimMeen/Weibo-Analyst](https://github.com/KimMeen/Weibo-Analyst)
+
+增加了提取形容词的功能，改善词云图重点不突出的问题
+
+
+### weibo-LDAprocess
+
+可实现主题聚类，适用gensim库，在colab中运行
+
+
+
+
+## 改めて　感謝の気持ちを表す
+
+
