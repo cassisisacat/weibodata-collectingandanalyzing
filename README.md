@@ -45,7 +45,7 @@ forked from [KimMeen/Weibo-Analyst](https://github.com/KimMeen/Weibo-Analyst)
 
 ### weibo-LDAprocess
 
-可实现主题聚类，适用gensim库，在colab中运行
+可实现主题聚类，使用gensim库，在colab中运行
 
 
 
