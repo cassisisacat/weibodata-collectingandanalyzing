@@ -10,14 +10,14 @@ import jieba.posseg as pseg
 
 jieba.enable_paddle()
 
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\dict_baidu_utf8.txt")
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\dict_pangu.txt")
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\dict_sougou_utf8.txt")
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\dict_tencent_utf8.txt")
-jieba.load_userdict("C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\SogouLabDic.txt")
+jieba.load_userdict("dict_baidu_utf8.txt")
+jieba.load_userdict("dict_pangu.txt")
+jieba.load_userdict("dict_sougou_utf8.txt")
+jieba.load_userdict("dict_tencent_utf8.txt")
+jieba.load_userdict("SogouLabDic.txt")
 
-stopwords = {}.fromkeys([ line.rstrip() for line in open('C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\Stopword.txt',encoding='utf-8' )])
-with open('C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\安迪.csv',encoding='utf-8')as csvfile:
+stopwords = {}.fromkeys([ line.rstrip() for line in open('Stopword.txt',encoding='utf-8' )])
+with open('.csv',encoding='utf-8')as csvfile:
         reader=csv.reader(csvfile)
         column=[row[0] for row in reader]
 
@@ -38,7 +38,7 @@ def get_data(index_weibo):
             h=i+flag
             result.append(h)
     
-    fo=open('C:\\Users\\moban\\Documents\\Cassis\\weibo-search\\weibo\\character_full.dat','a+',encoding='utf-8')
+    fo=open('character_full.dat','a+',encoding='utf-8')
 
     for j in result:
         fo.write(j)
